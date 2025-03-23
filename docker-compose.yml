@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telegram-crawler
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+      - ./exports:/app/exports
+      - ./sessions:/app/sessions
+      - ./data:/app/data
+      - ./.env:/app/.env
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:latest
+    container_name: telegram-crawler-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:latest
+    container_name: telegram-crawler-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+
+  # Опциональный сервис для управления MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: telegram-crawler-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
+  redis-data:
