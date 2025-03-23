@@ -1,0 +1,10 @@
+python-telegram-bot==13.7
+telethon==1.30.3
+pymongo==4.5.0
+loguru==0.7.2
+python-dotenv==1.0.0
+redis==5.0.1
+telephone==0.2.0
+aiohttp==3.9.1
+pydantic==2.5.2
+psutil==5.9.6
